@@ -13,7 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as AuthIndexImport } from './routes/_auth/index'
-import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
+import { Route as AuthInstitutionsImport } from './routes/_auth/institutions'
+import { Route as AuthDonationsImport } from './routes/_auth/donations'
 import { Route as publicLoginImport } from './routes/(public)/login'
 
 // Create/Update Routes
@@ -29,9 +30,15 @@ const AuthIndexRoute = AuthIndexImport.update({
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
-const AuthDashboardRoute = AuthDashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthInstitutionsRoute = AuthInstitutionsImport.update({
+  id: '/institutions',
+  path: '/institutions',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthDonationsRoute = AuthDonationsImport.update({
+  id: '/donations',
+  path: '/donations',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
@@ -59,11 +66,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicLoginImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardImport
+    '/_auth/donations': {
+      id: '/_auth/donations'
+      path: '/donations'
+      fullPath: '/donations'
+      preLoaderRoute: typeof AuthDonationsImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/_auth/institutions': {
+      id: '/_auth/institutions'
+      path: '/institutions'
+      fullPath: '/institutions'
+      preLoaderRoute: typeof AuthInstitutionsImport
       parentRoute: typeof AuthRouteImport
     }
     '/_auth/': {
@@ -79,12 +93,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthRouteRouteChildren {
-  AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthDonationsRoute: typeof AuthDonationsRoute
+  AuthInstitutionsRoute: typeof AuthInstitutionsRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthDashboardRoute: AuthDashboardRoute,
+  AuthDonationsRoute: AuthDonationsRoute,
+  AuthInstitutionsRoute: AuthInstitutionsRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
 
@@ -95,13 +111,15 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '': typeof AuthRouteRouteWithChildren
   '/login': typeof publicLoginRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/donations': typeof AuthDonationsRoute
+  '/institutions': typeof AuthInstitutionsRoute
   '/': typeof AuthIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof publicLoginRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/donations': typeof AuthDonationsRoute
+  '/institutions': typeof AuthInstitutionsRoute
   '/': typeof AuthIndexRoute
 }
 
@@ -109,16 +127,23 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/(public)/login': typeof publicLoginRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/donations': typeof AuthDonationsRoute
+  '/_auth/institutions': typeof AuthInstitutionsRoute
   '/_auth/': typeof AuthIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/dashboard' | '/'
+  fullPaths: '' | '/login' | '/donations' | '/institutions' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/dashboard' | '/'
-  id: '__root__' | '/_auth' | '/(public)/login' | '/_auth/dashboard' | '/_auth/'
+  to: '/login' | '/donations' | '/institutions' | '/'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/(public)/login'
+    | '/_auth/donations'
+    | '/_auth/institutions'
+    | '/_auth/'
   fileRoutesById: FileRoutesById
 }
 
@@ -149,15 +174,20 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth/route.tsx",
       "children": [
-        "/_auth/dashboard",
+        "/_auth/donations",
+        "/_auth/institutions",
         "/_auth/"
       ]
     },
     "/(public)/login": {
       "filePath": "(public)/login.tsx"
     },
-    "/_auth/dashboard": {
-      "filePath": "_auth/dashboard.tsx",
+    "/_auth/donations": {
+      "filePath": "_auth/donations.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/institutions": {
+      "filePath": "_auth/institutions.tsx",
       "parent": "/_auth"
     },
     "/_auth/": {

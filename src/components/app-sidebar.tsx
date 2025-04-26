@@ -32,7 +32,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className='p-2 bg-sidebar' >
+    <Sidebar className="p-2 bg-sidebar">
       <SidebarHeader>
         <h1 className="text-2xl font-bold">Reapp</h1>
         <p className="text-nowrap text-xs">Painel do Administrador</p>

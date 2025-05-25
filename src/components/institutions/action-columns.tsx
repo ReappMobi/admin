@@ -149,3 +149,62 @@ export const pendingActions: ColumnDef<Account>[] = [
     },
   },
 ];
+
+export const suspendedActions: ColumnDef<Account>[] = [
+  {
+    id: 'actions',
+    header: 'Ações',
+    enableHiding: false,
+    cell: ({ row }) => {
+      const { token } = useAuthStore();
+      const { id } = row.original;
+      const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
+
+      const handleChangeStatus = (newStatus: AccountStatus) => {
+        updateStatus({
+          token,
+          accountId: id,
+          status: newStatus,
+        });
+      };
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 cursor-pointer p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="w-full cursor-pointer text-left"
+              asChild
+            >
+              <Button
+                variant={'ghost'}
+                onClick={() => handleChangeStatus(AccountStatus.ACTIVE)}
+                disabled={isPending}
+              >
+                Revogar suspensão
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="w-full cursor-pointer text-left"
+              asChild
+            >
+              <Button
+                variant={'ghost'}
+                onClick={() => handleChangeStatus(AccountStatus.BANNED)}
+                disabled={isPending}
+              >
+                Banir instituição
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];

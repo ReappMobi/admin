@@ -10,6 +10,7 @@ import { AccountStatus } from '@/types/account';
 import {
   activeActions,
   pendingActions,
+  suspendedActions,
 } from '@/components/institutions/action-columns';
 
 export const Route = createFileRoute('/_auth/institutions')({
@@ -63,6 +64,27 @@ function PendingInstitutionsTable({ token }: InstitutionsTableProps) {
     </TabsContent>
   );
 }
+function SupendedInstitutionsTable({ token }: InstitutionsTableProps) {
+  const { data: institutions, isLoading } = useGetInstitutionsAccounts({
+    token,
+    status: AccountStatus.SUSPENDED,
+  });
+  return (
+    <TabsContent value="suspended">
+      {isLoading ? (
+        <div className="relative">
+          <Skeleton className="h-96 relative" />
+          <Loader className="motion-safe:animate-spin absolute top-1/2 right-1/2" />
+        </div>
+      ) : (
+        <InstitutionsTable
+          columns={[...columns, ...suspendedActions]}
+          data={institutions || []}
+        />
+      )}
+    </TabsContent>
+  );
+}
 
 function RouteComponent() {
   const { token } = useAuthStore();
@@ -83,9 +105,13 @@ function RouteComponent() {
           <TabsTrigger value="pending" className="cursor-pointer">
             Pendentes
           </TabsTrigger>
+          <TabsTrigger value="suspended" className="cursor-pointer">
+            Suspensas
+          </TabsTrigger>
         </TabsList>
         <RegisteredInstitutionsTable token={token} />
         <PendingInstitutionsTable token={token} />
+        <SupendedInstitutionsTable token={token} />
       </Tabs>
     </div>
   );

@@ -11,6 +11,7 @@ import {
 import { Banknote, Home, Landmark } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { Link } from '@tanstack/react-router';
+import { useAuthStore } from '@/store/auth.store';
 
 const items = [
   {
@@ -31,6 +32,12 @@ const items = [
 ] as const;
 
 export function AppSidebar() {
+  const { logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    logout();
+  };
+
   return (
     <Sidebar className="p-2 bg-sidebar">
       <SidebarHeader>
@@ -41,22 +48,24 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroupContent>
           <SidebarMenu>
-            <SidebarMenuItem>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenuItem>
+            {items.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <Link to={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <Link to={'/login'} onClick={handleLogout}>
+          Sair
+        </Link>
+      </SidebarFooter>
     </Sidebar>
   );
 }

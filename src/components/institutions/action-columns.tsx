@@ -12,6 +12,18 @@ import { MoreHorizontal } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useUpdateAccountStatus } from '@/service/account/requests';
 import { useAuthStore } from '@/store/auth.store';
+import { useRouter } from '@tanstack/react-router';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 export type Institutions = {
   id: string;
@@ -27,8 +39,10 @@ export const activeActions: ColumnDef<Account>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const { token } = useAuthStore();
-      const { id } = row.original;
+      const { id, name } = row.original;
       const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
+
+      const router = useRouter();
 
       const handleChangeStatus = (newStatus: AccountStatus) => {
         updateStatus({
@@ -66,23 +80,50 @@ export const activeActions: ColumnDef<Account>[] = [
             >
               <Button
                 variant={'ghost'}
-                onClick={() => handleChangeStatus(AccountStatus.BANNED)}
-                disabled={isPending}
-              >
-                Banir instituição
-              </Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="w-full cursor-pointer text-left"
-              asChild
-            >
-              <Button
-                variant={'ghost'}
                 onClick={() => handleChangeStatus(AccountStatus.PENDING)}
                 disabled={isPending}
               >
                 Revogar aprovação
               </Button>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              asChild
+              className="w-full cursor-pointer text-left"
+            >
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant={'ghost'} disabled={isPending}>
+                    Banir instituição
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Banir instituição</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Você tem certeza que deseja banir a instituição{' '}
+                      <span className="font-semibold">{name}</span> ?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="cursor-pointer"
+                      disabled={isPending}
+                      onClick={() => {
+                        handleChangeStatus(AccountStatus.BANNED);
+                        router.navigate({
+                          to: '/institutions',
+                        });
+                      }}
+                    >
+                      Banir
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -157,9 +198,9 @@ export const suspendedActions: ColumnDef<Account>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const { token } = useAuthStore();
-      const { id } = row.original;
+      const { id, name } = row.original;
       const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
-
+      const router = useRouter();
       const handleChangeStatus = (newStatus: AccountStatus) => {
         updateStatus({
           token,
@@ -191,16 +232,43 @@ export const suspendedActions: ColumnDef<Account>[] = [
               </Button>
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="w-full cursor-pointer text-left"
               asChild
+              className="w-full cursor-pointer text-left"
             >
-              <Button
-                variant={'ghost'}
-                onClick={() => handleChangeStatus(AccountStatus.BANNED)}
-                disabled={isPending}
-              >
-                Banir instituição
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant={'ghost'} disabled={isPending}>
+                    Banir instituição
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Banir instituição</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Você tem certeza que deseja banir a instituição{' '}
+                      <span className="font-semibold">{name}</span> ?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="cursor-pointer"
+                      disabled={isPending}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleChangeStatus(AccountStatus.BANNED);
+                        router.navigate({
+                          to: '/institutions',
+                        });
+                      }}
+                    >
+                      Banir
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

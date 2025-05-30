@@ -1,19 +1,4 @@
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { type Account, AccountStatus } from '@/types/account';
-import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
-import { Button } from '../ui/button';
-import { useUpdateAccountStatus } from '@/service/account/requests';
-import { useAuthStore } from '@/store/auth.store';
-import { useRouter } from '@tanstack/react-router';
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -24,6 +9,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useUpdateAccountStatus } from '@/service/account/requests';
+import { useAuthStore } from '@/store/auth.store';
+import { type Account, AccountStatus } from '@/types/account';
+import { useRouter } from '@tanstack/react-router';
+import type { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export type Institutions = {
   id: string;

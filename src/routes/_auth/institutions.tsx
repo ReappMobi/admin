@@ -1,17 +1,17 @@
-import { columns } from '@/components/institutions/columns';
-import { InstitutionsTable } from '@/components/institutions/data-table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useGetInstitutionsAccounts } from '@/service/account/requests';
-import { useAuthStore } from '@/store/auth.store';
-import { Skeleton } from '@/components/ui/skeleton';
-import { createFileRoute } from '@tanstack/react-router';
-import { Loader } from 'lucide-react';
-import { AccountStatus } from '@/types/account';
 import {
   activeActions,
   pendingActions,
   suspendedActions,
 } from '@/components/institutions/action-columns';
+import { columns } from '@/components/institutions/columns';
+import { InstitutionsTable } from '@/components/institutions/data-table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useGetInstitutionsAccounts } from '@/service/account/requests';
+import { useAuthStore } from '@/store/auth.store';
+import { AccountStatus } from '@/types/account';
+import { createFileRoute } from '@tanstack/react-router';
+import { Loader } from 'lucide-react';
 
 export const Route = createFileRoute('/_auth/institutions')({
   component: RouteComponent,

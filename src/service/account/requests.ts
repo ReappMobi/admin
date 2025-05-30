@@ -1,9 +1,9 @@
+import type { AccountStatus } from '@/types/account';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getInstitutionsAccounts,
   updateAccountStatus,
 } from './account.service';
-import type { AccountStatus } from '@/types/account';
 
 type UseGetInstitutionsParams = {
   token: string | null;

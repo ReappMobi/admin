@@ -1,9 +1,10 @@
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Circle } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 import {
   Card,
   CardContent,
@@ -20,7 +21,6 @@ import {
   FormMessage,
 } from './ui/form';
 import { Input } from './ui/input';
-import { Button } from './ui/button';
 
 const loginFormValidationSchema = z.object({
   email: z.string().email('Email inválido').nonempty('Campo obrigatório'),

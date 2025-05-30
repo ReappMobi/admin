@@ -1,11 +1,11 @@
 import { LoginForm, type LoginFormValues } from '@/components/login-form';
+import { Toaster } from '@/components/ui/sonner';
 import { loginMutation } from '@/service/auth/requests';
 import { useAuthStore } from '@/store/auth.store';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { Toaster } from '@/components/ui/sonner';
-import { z } from 'zod';
-import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const fallback = '/' as const;
 

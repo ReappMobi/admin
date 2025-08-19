@@ -30,7 +30,7 @@ interface AuthStoreActions {
   getUser: () => TokenAccount | null;
 }
 
-type AuthStore = AuthStoreState & AuthStoreActions;
+export type AuthStore = AuthStoreState & AuthStoreActions;
 
 const isTokenValid = (token: Token): boolean => {
   if (!token) return false;
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthStore>()(
         const { token } = get();
         return !!token && isTokenValid(token);
       },
-      login(token) {
+      login(token: Token) {
         if (token && isTokenValid(token)) {
           set({ token });
         }

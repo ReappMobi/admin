@@ -30,7 +30,7 @@ interface AuthStoreActions {
   getUser: () => TokenAccount | null;
 }
 
-type AuthStore = AuthStoreState & AuthStoreActions;
+export type AuthStore = AuthStoreState & AuthStoreActions;
 
 const isTokenValid = (token: Token): boolean => {
   if (!token) return false;

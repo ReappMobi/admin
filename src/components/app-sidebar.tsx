@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/store/auth.store';
 import { Link } from '@tanstack/react-router';
-import { Banknote, Home, Landmark } from 'lucide-react';
+import { Home, Landmark } from 'lucide-react';
 import { Separator } from './ui/separator';
 
 const items = [
@@ -23,11 +23,6 @@ const items = [
     title: 'Instituições',
     url: '/institutions',
     icon: Landmark,
-  },
-  {
-    title: 'Doações',
-    url: '/donations',
-    icon: Banknote,
   },
 ] as const;
 

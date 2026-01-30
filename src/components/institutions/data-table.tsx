@@ -60,7 +60,10 @@ export function InstitutionsTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-center text-sm px-2 py-1" key={cell.id}>
+                    <TableCell
+                      className="text-center text-sm px-2 py-1"
+                      key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -84,7 +87,7 @@ export function InstitutionsTable<TData, TValue>({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
-          className='cursor-pointer'
+          className="cursor-pointer"
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
@@ -93,7 +96,7 @@ export function InstitutionsTable<TData, TValue>({
           Anterior
         </Button>
         <Button
-          className='cursor-pointer'
+          className="cursor-pointer"
           variant="outline"
           size="sm"
           onClick={() => table.nextPage()}

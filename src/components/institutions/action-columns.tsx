@@ -79,7 +79,7 @@ export const activeActions: ColumnDef<Account>[] = [
               asChild
             >
               <Button
-                className='w-full cursor-pointer'
+                className="w-full cursor-pointer"
                 variant="ghost"
                 onClick={() => handleChangeStatus(AccountStatus.PENDING)}
                 disabled={isPending}

@@ -8,6 +8,7 @@ import { InstitutionsTable } from '@/components/institutions/data-table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetInstitutionsAccounts } from '@/service/account/requests';
+import { useAuthStore } from '@/store/auth.store';
 import { AccountStatus } from '@/types/account';
 import { createFileRoute } from '@tanstack/react-router';
 import { Loader } from 'lucide-react';
@@ -16,8 +17,13 @@ export const Route = createFileRoute('/_auth/institutions')({
   component: RouteComponent,
 });
 
-function RegisteredInstitutionsTable() {
+type InstitutionsTableProps = {
+  token: string | null;
+};
+
+function RegisteredInstitutionsTable({ token }: InstitutionsTableProps) {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
+    token,
     status: AccountStatus.ACTIVE,
   });
   return (
@@ -37,8 +43,9 @@ function RegisteredInstitutionsTable() {
   );
 }
 
-function PendingInstitutionsTable() {
+function PendingInstitutionsTable({ token }: InstitutionsTableProps) {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
+    token,
     status: AccountStatus.PENDING,
   });
   return (
@@ -57,8 +64,9 @@ function PendingInstitutionsTable() {
     </TabsContent>
   );
 }
-function SupendedInstitutionsTable() {
+function SupendedInstitutionsTable({ token }: InstitutionsTableProps) {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
+    token,
     status: AccountStatus.SUSPENDED,
   });
   return (
@@ -79,32 +87,32 @@ function SupendedInstitutionsTable() {
 }
 
 function RouteComponent() {
+  const { token } = useAuthStore();
+
   return (
-    <div className="w-full">
-      <div className="max-w-screen-lg mx-auto">
-        <div className="my-4">
-          <h1 className="text-2xl font-bold">Instituições</h1>
-          <p className="text-sm text-muted-foreground">
-            Gerencie as instituições do app.
-          </p>
-        </div>
-        <Tabs defaultValue="registered" className="max-w-screen-lg">
-          <TabsList>
-            <TabsTrigger value="registered" className="cursor-pointer">
-              Cadastradas
-            </TabsTrigger>
-            <TabsTrigger value="pending" className="cursor-pointer">
-              Pendentes
-            </TabsTrigger>
-            <TabsTrigger value="suspended" className="cursor-pointer">
-              Suspensas
-            </TabsTrigger>
-          </TabsList>
-          <RegisteredInstitutionsTable />
-          <PendingInstitutionsTable />
-          <SupendedInstitutionsTable />
-        </Tabs>
+    <div>
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold">Instituições</h1>
+        <p className="text-sm text-muted-foreground">
+          Gerencie as instituições do app.
+        </p>
       </div>
+      <Tabs defaultValue="registered" className="max-w-screen-lg">
+        <TabsList>
+          <TabsTrigger value="registered" className="cursor-pointer">
+            Cadastradas
+          </TabsTrigger>
+          <TabsTrigger value="pending" className="cursor-pointer">
+            Pendentes
+          </TabsTrigger>
+          <TabsTrigger value="suspended" className="cursor-pointer">
+            Suspensas
+          </TabsTrigger>
+        </TabsList>
+        <RegisteredInstitutionsTable token={token} />
+        <PendingInstitutionsTable token={token} />
+        <SupendedInstitutionsTable token={token} />
+      </Tabs>
     </div>
   );
 }

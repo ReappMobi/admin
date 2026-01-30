@@ -79,8 +79,7 @@ export const activeActions: ColumnDef<Account>[] = [
               asChild
             >
               <Button
-                className="w-full cursor-pointer"
-                variant="ghost"
+                variant={'ghost'}
                 onClick={() => handleChangeStatus(AccountStatus.PENDING)}
                 disabled={isPending}
               >
@@ -94,11 +93,7 @@ export const activeActions: ColumnDef<Account>[] = [
             >
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    className="w-full cursor-pointer"
-                    variant={'ghost'}
-                    disabled={isPending}
-                  >
+                  <Button variant={'ghost'} disabled={isPending}>
                     Banir instituição
                   </Button>
                 </AlertDialogTrigger>

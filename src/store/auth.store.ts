@@ -4,34 +4,30 @@ import { persist } from 'zustand/middleware';
 
 type AccountType = 'ADMIN' | 'INSTITUTION' | 'DONOR';
 
-export interface User {
+interface TokenAccount {
   id: number;
   email: string;
   name: string;
   accountType: AccountType;
-  media?: {
-    remoteUrl: string;
-  } | null;
-  status?: string;
 }
 
 interface TokenPayload {
   exp: number;
   iat: number;
+  user: TokenAccount;
 }
 
 type Token = string | null;
 
 interface AuthStoreState {
   token: Token;
-  user: User | null;
 }
 
 interface AuthStoreActions {
   isLogged: () => boolean;
-  login: (token: Token, user: User) => void;
+  login: (token: Token) => void;
   logout: () => void;
-  getUser: () => User | null;
+  getUser: () => TokenAccount | null;
 }
 
 export type AuthStore = AuthStoreState & AuthStoreActions;
@@ -50,27 +46,33 @@ export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
       token: null,
-      user: null,
       getUser() {
-        return get().user;
+        const { token } = get();
+        if (!token) return null;
+        try {
+          const { user } = jwtDecode<TokenPayload>(token);
+          return user;
+        } catch {
+          return null;
+        }
       },
       isLogged() {
         const { token } = get();
         return !!token && isTokenValid(token);
       },
-      login(token, user) {
+      login(token) {
         if (token && isTokenValid(token)) {
-          set({ token, user });
+          set({ token });
         }
       },
       logout() {
-        set({ token: null, user: null });
+        set({ token: null });
         localStorage.removeItem('auth-storage');
       },
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ token: state.token, user: state.user }),
+      partialize: (state) => ({ token: state.token }),
       onRehydrateStorage(state) {
         if (state) {
           const { token } = state;

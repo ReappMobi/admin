@@ -31,7 +31,7 @@ function Page() {
   const handleSubmit = async (data: LoginFormValues) => {
     login(data, {
       onSuccess: (data) => {
-        auth.login(data.token, data.user);
+        auth.login(data.token);
 
         const redirectTo = search.redirect || fallback;
         navigate({ to: redirectTo });

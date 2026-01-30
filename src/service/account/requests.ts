@@ -1,51 +1,37 @@
-import { useAuthStore } from '@/store/auth.store';
 import type { AccountStatus } from '@/types/account';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  getDonorsAccounts,
   getInstitutionsAccounts,
   updateAccountStatus,
 } from './account.service';
 
 type UseGetInstitutionsParams = {
-  status?: AccountStatus;
-};
-
-type UseGetDonorsParams = {
+  token: string | null;
   status?: AccountStatus;
 };
 
 type UseUpdateAccountStatusParams = {
+  token: string | null;
   accountId: number;
   status: AccountStatus;
 };
 
-export const useGetInstitutionsAccounts = (
-  params?: UseGetInstitutionsParams,
-) => {
-  const token = useAuthStore((state) => state.token);
-  return useQuery({
+export const useGetInstitutionsAccounts = ({
+  token,
+  ...params
+}: UseGetInstitutionsParams) =>
+  useQuery({
     queryKey: ['institutions', { params }],
-    queryFn: () => getInstitutionsAccounts(params || {}),
+    queryFn: () => getInstitutionsAccounts({ token, ...params }),
     enabled: !!token,
   });
-};
-
-export const useGetDonorsAccounts = (params?: UseGetDonorsParams) => {
-  const token = useAuthStore((state) => state.token);
-  return useQuery({
-    queryKey: ['donors', { params }],
-    queryFn: () => getDonorsAccounts(params || {}),
-    enabled: !!token,
-  });
-};
 
 export const useUpdateAccountStatus = (accountId: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['accountStatus', accountId],
-    mutationFn: ({ accountId, status }: UseUpdateAccountStatusParams) =>
-      updateAccountStatus({ accountId, status }),
+    mutationFn: ({ token, accountId, status }: UseUpdateAccountStatusParams) =>
+      updateAccountStatus({ token, accountId, status }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['institutions'],

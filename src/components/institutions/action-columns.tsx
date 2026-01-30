@@ -18,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUpdateAccountStatus } from '@/service/account/requests';
-import { useAuthStore } from '@/store/auth.store';
 import { type Account, AccountStatus } from '@/types/account';
 import { useRouter } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -38,7 +37,6 @@ export const activeActions: ColumnDef<Account>[] = [
     header: 'Ações',
     enableHiding: false,
     cell: ({ row }) => {
-      const { token } = useAuthStore();
       const { id, name } = row.original;
       const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
 
@@ -46,7 +44,6 @@ export const activeActions: ColumnDef<Account>[] = [
 
       const handleChangeStatus = (newStatus: AccountStatus) => {
         updateStatus({
-          token,
           accountId: id,
           status: newStatus,
         });
@@ -143,13 +140,11 @@ export const pendingActions: ColumnDef<Account>[] = [
     header: 'Ações',
     enableHiding: false,
     cell: ({ row }) => {
-      const { token } = useAuthStore();
       const { id } = row.original;
       const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
 
       const handleChangeStatus = (newStatus: AccountStatus) => {
         updateStatus({
-          token,
           accountId: id,
           status: newStatus,
         });
@@ -202,13 +197,11 @@ export const suspendedActions: ColumnDef<Account>[] = [
     header: 'Ações',
     enableHiding: false,
     cell: ({ row }) => {
-      const { token } = useAuthStore();
       const { id, name } = row.original;
       const { mutate: updateStatus, isPending } = useUpdateAccountStatus(id);
       const router = useRouter();
       const handleChangeStatus = (newStatus: AccountStatus) => {
         updateStatus({
-          token,
           accountId: id,
           status: newStatus,
         });

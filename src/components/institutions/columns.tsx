@@ -44,10 +44,6 @@ export const columns: ColumnDef<Account>[] = [
     },
   },
   {
-    accessorKey: 'followersCount',
-    header: 'Seguidores',
-  },
-  {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {

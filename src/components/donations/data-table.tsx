@@ -20,7 +20,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function InstitutionsTable<TData, TValue>({
+export function DonationsTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -60,10 +60,7 @@ export function InstitutionsTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      className="text-center text-sm px-2 py-1"
-                      key={cell.id}
-                    >
+                    <TableCell className="text-center text-sm" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

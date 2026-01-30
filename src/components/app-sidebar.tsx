@@ -71,7 +71,7 @@ export function AppSidebar() {
               <Link to="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
                   <img
-                    src="/fav.png"
+                    src="/fav.webp"
                     alt="Reapp Logo"
                     className="size-full object-contain"
                   />

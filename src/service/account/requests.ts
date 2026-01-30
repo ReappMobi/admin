@@ -21,12 +21,12 @@ type UseUpdateAccountStatusParams = {
 };
 
 export const useGetInstitutionsAccounts = (
-  params: UseGetInstitutionsParams,
+  params?: UseGetInstitutionsParams,
 ) => {
   const token = useAuthStore((state) => state.token);
   return useQuery({
     queryKey: ['institutions', { params }],
-    queryFn: () => getInstitutionsAccounts(params),
+    queryFn: () => getInstitutionsAccounts(params || {}),
     enabled: !!token,
   });
 };
@@ -35,7 +35,7 @@ export const useGetDonorsAccounts = (params?: UseGetDonorsParams) => {
   const token = useAuthStore((state) => state.token);
   return useQuery({
     queryKey: ['donors', { params }],
-    queryFn: () => getDonorsAccounts(params),
+    queryFn: () => getDonorsAccounts(params || {}),
     enabled: !!token,
   });
 };

@@ -10,6 +10,7 @@ import {
   useGetDonorsAccounts,
   useGetInstitutionsAccounts,
 } from '@/service/account/requests';
+import { useGetAllDonations } from '@/service/donation/requests';
 import { useAuthStore } from '@/store/auth.store';
 import { AccountStatus } from '@/types/account';
 import { createFileRoute, Link } from '@tanstack/react-router';
@@ -31,10 +32,20 @@ function RouteComponent() {
   const { data: institutions } = useGetInstitutionsAccounts({
     status: AccountStatus.ACTIVE,
   });
-  const { data: donors } = useGetDonorsAccounts();
+  const { data: donors } = useGetDonorsAccounts({});
+  const { data: donations } = useGetAllDonations({ limit: 100 }); // Fetching more to get a better sum estimation
 
   const allAccounts = [...(institutions || []), ...(donors || [])];
   const activityGrowth = calculateMonthlyGrowth(allAccounts);
+
+  const totalDonationsAmount = (donations || [])
+    .filter((d) => d.status === 'APPROVED')
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const formattedDonations = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(totalDonationsAmount);
 
   const stats = [
     {
@@ -46,8 +57,8 @@ function RouteComponent() {
     },
     {
       title: 'Doações',
-      value: 'R$ 0,00',
-      description: 'Total arrecadado no mês',
+      value: formattedDonations,
+      description: 'Total arrecadado (Recente)',
       icon: DollarSign,
       color: 'text-green-600',
     },

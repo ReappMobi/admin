@@ -30,7 +30,9 @@ export function calculateMonthlyGrowth(data: HasCreatedAt[] = []) {
   return Math.round(growth);
 }
 
-export function calculateMonthlyAmountGrowth(data: HasAmountAndCreatedAt[] = []) {
+export function calculateMonthlyAmountGrowth(
+  data: HasAmountAndCreatedAt[] = [],
+) {
   const now = new Date();
 
   const currentMonthItems = data.filter((item) => {

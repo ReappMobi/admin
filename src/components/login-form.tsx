@@ -55,10 +55,19 @@ export function LoginForm({
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Reapp Admin</CardTitle>
+        <CardHeader className="text-center">
+          <div className="relative flex justify-center mb-4">
+            <div className="absolute -top-14 rounded-full bg-white flex aspect-square size-16 items-center justify-center overflow-hidden">
+              <img
+                src="/fav.png"
+                alt="Reapp Logo"
+                className="size-full object-contain"
+              />
+            </div>
+          </div>
+          <CardTitle className="text-2xl">Bem-vindo de volta</CardTitle>
           <CardDescription>
-            Entre com sua conta para continuar...
+            Entre com suas credenciais para acessar o painel administrativo
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -75,7 +84,7 @@ export function LoginForm({
                         <Input
                           type="email"
                           required
-                          placeholder="Digite seu email"
+                          placeholder="admin@reapp.com"
                           autoComplete="email"
                           autoCapitalize="none"
                           autoCorrect="off"
@@ -92,7 +101,9 @@ export function LoginForm({
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Senha</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Senha</FormLabel>
+                      </div>
                       <FormControl>
                         <Input type="password" required {...field} />
                       </FormControl>
@@ -103,7 +114,7 @@ export function LoginForm({
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-green-600 hover:bg-green-700 ring-green-300 cursor-pointer"
+                  className="w-full bg-green-600 hover:bg-green-700 ring-green-300 cursor-pointer"
                 >
                   Entrar
                   {isLoading && (

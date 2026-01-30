@@ -8,7 +8,6 @@ import { InstitutionsTable } from '@/components/institutions/data-table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetInstitutionsAccounts } from '@/service/account/requests';
-import { useAuthStore } from '@/store/auth.store';
 import { AccountStatus } from '@/types/account';
 import { createFileRoute } from '@tanstack/react-router';
 import { Loader } from 'lucide-react';
@@ -17,13 +16,8 @@ export const Route = createFileRoute('/_auth/institutions')({
   component: RouteComponent,
 });
 
-type InstitutionsTableProps = {
-  token: string | null;
-};
-
-function RegisteredInstitutionsTable({ token }: InstitutionsTableProps) {
+function RegisteredInstitutionsTable() {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
-    token,
     status: AccountStatus.ACTIVE,
   });
   return (
@@ -43,9 +37,8 @@ function RegisteredInstitutionsTable({ token }: InstitutionsTableProps) {
   );
 }
 
-function PendingInstitutionsTable({ token }: InstitutionsTableProps) {
+function PendingInstitutionsTable() {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
-    token,
     status: AccountStatus.PENDING,
   });
   return (
@@ -64,9 +57,8 @@ function PendingInstitutionsTable({ token }: InstitutionsTableProps) {
     </TabsContent>
   );
 }
-function SupendedInstitutionsTable({ token }: InstitutionsTableProps) {
+function SupendedInstitutionsTable() {
   const { data: institutions, isLoading } = useGetInstitutionsAccounts({
-    token,
     status: AccountStatus.SUSPENDED,
   });
   return (
@@ -87,11 +79,9 @@ function SupendedInstitutionsTable({ token }: InstitutionsTableProps) {
 }
 
 function RouteComponent() {
-  const { token } = useAuthStore();
-
   return (
     <div className="w-full">
-      <div className='max-w-screen-lg mx-auto'>
+      <div className="max-w-screen-lg mx-auto">
         <div className="my-4">
           <h1 className="text-2xl font-bold">Instituições</h1>
           <p className="text-sm text-muted-foreground">
@@ -110,9 +100,9 @@ function RouteComponent() {
               Suspensas
             </TabsTrigger>
           </TabsList>
-          <RegisteredInstitutionsTable token={token} />
-          <PendingInstitutionsTable token={token} />
-          <SupendedInstitutionsTable token={token} />
+          <RegisteredInstitutionsTable />
+          <PendingInstitutionsTable />
+          <SupendedInstitutionsTable />
         </Tabs>
       </div>
     </div>

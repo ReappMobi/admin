@@ -133,7 +133,7 @@ function RouteComponent() {
                   <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-300" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Gerenciar Instituições</h3>
+                  <div className="font-medium">Gerenciar Instituições</div>
                   <p className="text-sm text-muted-foreground">
                     Ver e editar instituições
                   </p>
@@ -151,7 +151,7 @@ function RouteComponent() {
                   <DollarSign className="h-5 w-5 text-green-600 dark:text-green-300" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Ver Doações</h3>
+                  <div className="font-medium">Ver Doações</div>
                   <p className="text-sm text-muted-foreground">
                     Relatório de doações
                   </p>

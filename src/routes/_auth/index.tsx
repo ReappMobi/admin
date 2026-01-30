@@ -18,7 +18,6 @@ function RouteComponent() {
 
         <div className="flex flex-col gap-2">
           <p className="text-sm font-bold">Ações</p>
-
           <hr className="my-2" />
         </div>
 

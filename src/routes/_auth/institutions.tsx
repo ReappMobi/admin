@@ -90,29 +90,31 @@ function RouteComponent() {
   const { token } = useAuthStore();
 
   return (
-    <div>
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold">Instituições</h1>
-        <p className="text-sm text-muted-foreground">
-          Gerencie as instituições do app.
-        </p>
+    <div className="w-full">
+      <div className='max-w-screen-lg mx-auto'>
+        <div className="my-4">
+          <h1 className="text-2xl font-bold">Instituições</h1>
+          <p className="text-sm text-muted-foreground">
+            Gerencie as instituições do app.
+          </p>
+        </div>
+        <Tabs defaultValue="registered" className="max-w-screen-lg">
+          <TabsList>
+            <TabsTrigger value="registered" className="cursor-pointer">
+              Cadastradas
+            </TabsTrigger>
+            <TabsTrigger value="pending" className="cursor-pointer">
+              Pendentes
+            </TabsTrigger>
+            <TabsTrigger value="suspended" className="cursor-pointer">
+              Suspensas
+            </TabsTrigger>
+          </TabsList>
+          <RegisteredInstitutionsTable token={token} />
+          <PendingInstitutionsTable token={token} />
+          <SupendedInstitutionsTable token={token} />
+        </Tabs>
       </div>
-      <Tabs defaultValue="registered" className="max-w-screen-lg">
-        <TabsList>
-          <TabsTrigger value="registered" className="cursor-pointer">
-            Cadastradas
-          </TabsTrigger>
-          <TabsTrigger value="pending" className="cursor-pointer">
-            Pendentes
-          </TabsTrigger>
-          <TabsTrigger value="suspended" className="cursor-pointer">
-            Suspensas
-          </TabsTrigger>
-        </TabsList>
-        <RegisteredInstitutionsTable token={token} />
-        <PendingInstitutionsTable token={token} />
-        <SupendedInstitutionsTable token={token} />
-      </Tabs>
     </div>
   );
 }

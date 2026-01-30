@@ -17,16 +17,15 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/store/auth.store';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import {
   ChevronsUpDown,
-  Command,
   DollarSign,
   Home,
   Landmark,
   LogOut,
-  User2,
 } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const items = [
   {
@@ -48,11 +47,20 @@ const items = [
 
 export function AppSidebar() {
   const { logout, getUser } = useAuthStore();
+  const navigate = useNavigate();
   const user = getUser();
 
   const handleLogout = async () => {
     logout();
+    navigate({ to: '/login' });
   };
+
+  const initials = user?.name
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <Sidebar className="bg-sidebar border-r">
@@ -61,8 +69,12 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Command className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
+                  <img
+                    src="/fav.png"
+                    alt="Reapp Logo"
+                    className="size-full object-contain"
+                  />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">Reapp</span>
@@ -107,11 +119,17 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                 >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                    <User2 className="size-4" />
-                  </div>
+                  <Avatar className="size-8 rounded-full bg-gray-300">
+                    <AvatarImage
+                      src={user?.media?.remoteUrl}
+                      className="w-full object-cover"
+                    />
+                    <AvatarFallback className="rounded-full size-8 ">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user?.name}</span>
                     <span className="truncate text-xs">{user?.email}</span>

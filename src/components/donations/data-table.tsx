@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/table';
 import {
   type ColumnDef,
+  type PaginationState,
+  type Updater,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -18,17 +20,29 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  rowCount?: number;
+  pagination?: PaginationState;
+  onPaginationChange?: (updater: Updater<PaginationState>) => void;
 }
 
 export function DonationsTable<TData, TValue>({
   columns,
   data,
+  rowCount,
+  pagination,
+  onPaginationChange,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: !!rowCount,
+    rowCount,
+    state: {
+      pagination,
+    },
+    onPaginationChange,
   });
   return (
     <div>

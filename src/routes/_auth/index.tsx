@@ -13,7 +13,7 @@ import {
   useGetDonorsAccounts,
   useGetInstitutionsAccounts,
 } from '@/service/account/requests';
-import { useGetAllDonations } from '@/service/donation/requests';
+import { useGetAllDonations } from '@/service/donation/donation.service';
 import { useAuthStore } from '@/store/auth.store';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import {
@@ -33,7 +33,9 @@ function RouteComponent() {
 
   const { data: institutions } = useGetInstitutionsAccounts({});
   const { data: donors } = useGetDonorsAccounts({});
-  const { data: donations } = useGetAllDonations({ limit: 100 }); // Fetching more to get a better sum estimation
+  const { data: donationResponse } = useGetAllDonations({ limit: 100 }); // Fetching more to get a better sum estimation
+
+  const donations = donationResponse?.data || [];
 
   const allAccounts = [...(institutions || []), ...(donors || [])];
   const activityGrowth = calculateMonthlyGrowth(allAccounts);

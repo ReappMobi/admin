@@ -1,19 +1,15 @@
-import { backend } from '@/lib/backend';
-import type { Donation } from '@/types/donation';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { getAllDonations } from './donation.requests';
 
-type GetAllDonationsParams = {
-  page?: number;
+type UseGetAllDonationsParams = {
+  offset?: number;
   limit?: number;
 };
 
-export const getAllDonations = async (params: GetAllDonationsParams = {}) => {
-  const finalParams = {
-    page: 1,
-    limit: 10,
-    ...params,
-  };
-  const response = await backend.get<Donation[]>('/donation/all', {
-    params: finalParams,
+export const useGetAllDonations = (params: UseGetAllDonationsParams = {}) => {
+  return useQuery({
+    queryKey: ['donations', params],
+    queryFn: () => getAllDonations(params),
+    placeholderData: keepPreviousData,
   });
-  return response.data;
 };
